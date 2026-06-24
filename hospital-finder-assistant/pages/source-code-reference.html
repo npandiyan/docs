@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Source Code Reference — Hospital Finder Assistant</title>
+<style>
+  :root{--bg:#0b0f17;--card:#131c2e;--card2:#172238;--line:#243049;--txt:#e7ecf5;
+    --mut:#9aa7bd;--acc:#4f8cff;--acc2:#37d3a8;--warn:#ffb454}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 600px at 85% -10%,#16233f 0%,transparent 60%),var(--bg);
+    color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(11,15,23,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:12px 22px;display:flex;gap:16px;align-items:center}
+  .bar a{color:var(--acc);text-decoration:none;font-size:14px;font-weight:600}
+  .bar a:hover{text-decoration:underline}
+  .bar .crumb{color:var(--mut);font-size:13px}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 80px}
+  h1,h2,h3,h4{scroll-margin-top:64px}
+  h1{font-size:32px;line-height:1.15;letter-spacing:-.4px;margin:0 0 6px}
+  h2{font-size:23px;margin:42px 0 12px;padding-top:14px;border-top:1px solid var(--line);letter-spacing:-.2px}
+  h3{font-size:18px;margin:28px 0 8px;color:var(--acc2)}
+  h4{font-size:15px;margin:20px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+  p,li{color:#d7deec}
+  a{color:var(--acc)}
+  ul,ol{padding-left:22px} li{margin:5px 0}
+  code{background:#0a0e16;border:1px solid var(--line);border-radius:5px;padding:1.5px 6px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#9fe7cf}
+  pre{background:#0a0e16;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto}
+  pre code{background:none;border:none;padding:0;color:#cdd6e6;font-size:13.5px;line-height:1.7}
+  blockquote{margin:16px 0;padding:10px 18px;border-left:3px solid var(--acc);
+    background:var(--card);border-radius:0 10px 10px 0;color:var(--mut)}
+  blockquote p{margin:6px 0;color:var(--mut)}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:14.5px;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:var(--txt);font-weight:600}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+  .footer{color:var(--mut);font-size:13px;margin-top:50px;text-align:center;border-top:1px solid var(--line);padding-top:22px}
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html">← Project Hub</a><span class="crumb">/ Source Code Reference</span></div>
+<div class="wrap">
+<h1 id="source-code-documentation-voice-hospital-finder-bot">Source Code Documentation: Voice Hospital Finder Bot</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-apppy---application-entry-point"><code>app.py</code> - Application Entry Point</a></li>
+<li><a href="#2-dbmodelspy---pydantic-data-models"><code>db/models.py</code> - Pydantic Data Models</a>
+<ul>
+<li><a href="#llmresponsemodel"><code>LLMResponseModel</code></a></li>
+<li><a href="#raggroundedresponsemodel"><code>RAGGroundedResponseModel</code></a></li>
+<li><a href="#hospitalfinderstate"><code>HospitalFinderState</code></a></li>
+<li><a href="#ttsresponsemodel"><code>TTSResponseModel</code></a></li>
+</ul>
+</li>
+<li><a href="#3-dbmodulesfine_tunerpy---llm-fine-tuning"><code>db/modules/fine_tuner.py</code> - LLM Fine-Tuning</a>
+<ul>
+<li><a href="#fine_tune_insurance_llmdata_path-str--fine_tune_data_path"><code>fine_tune_insurance_llm</code></a></li>
+</ul>
+</li>
+<li><a href="#4-graphsgraph_toolspy---langchain-tools-for-graph"><code>graphs/graph_tools.py</code> - Langchain Tools for Graph</a>
+<ul>
+<li><a href="#transcribe_audio_toolaudio_path-str-uid-str---dict"><code>transcribe_audio_tool</code></a></li>
+<li><a href="#recognize_query_toolquery_text-str-uid-str-use_llm-bool--true---dict"><code>recognize_query_tool</code></a></li>
+<li><a href="#text_to_speech_tooltext-str-uid-str-output_dir-str--audiosoutput-convert_to_dialogue-bool--false---dict"><code>text_to_speech_tool</code></a></li>
+<li><a href="#hospital_lookup_tool---listdict"><code>hospital_lookup_tool</code></a></li>
+<li><a href="#hospital_lookup_rag_tool---tuplelistdict-str"><code>hospital_lookup_rag_tool</code></a></li>
+</ul>
+</li>
+<li><a href="#5-toolsrag_retrievepy---hospital-rag-retriever"><code>tools/rag_retrieve.py</code> - Hospital RAG Retriever</a>
+<ul>
+<li><a href="#class-hospitalragretriever"><code>class HospitalRAGRetriever</code></a>
+<ul>
+<li><a href="#__init__self-vector_db_path_override-str--none"><code>__init__</code></a></li>
+<li><a href="#retrieveself-user_input-dict-extra_results-int--2---listdict"><code>retrieve</code></a></li>
+<li><a href="#ground_with_qloraself-user_query-str-retrieved_hospitals-listdict---str"><code>ground_with_qlora</code></a></li>
+<li><a href="#ground_resultsself-user_input-dict-retrieved_hospitals-listdict---raggroundedresponsemodel"><code>ground_results</code></a></li>
+</ul>
+</li>
+<li><a href="#rag_search_wrapper---tuplelistdict-listdict-str"><code>rag_search_wrapper</code></a></li>
+</ul>
+</li>
+<li><a href="#6-langgraph-conversational-flow-conceptual">LangGraph Conversational Flow (Conceptual)</a></li>
+</ol>
+<h2 id="1-apppy---application-entry-point">1. <code>app.py</code> - Application Entry Point</h2>
+<p>The <code>app.py</code> script serves as the main entry point for the Voice Hospital Finder Bot. It initializes the core components and starts the conversational flow managed by LangGraph.</p>
+<p><strong>Flow</strong>:</p>
+<ol>
+<li><strong>Initialization</strong>: Displays a startup animation.</li>
+<li><strong>RAG Retriever Setup</strong>: An instance of <code>HospitalRAGRetriever</code> from <code>tools/rag_retrieve.py</code> is created. This retriever is central to handling hospital data retrieval and LLM-based grounding.</li>
+<li><strong>Global Retriever</strong>: The created <code>HospitalRAGRetriever</code> instance is made accessible globally via <code>set_rag_retriever_instance</code> from <code>graphs/graph_tools.py</code>, allowing other graph tools to utilize it.</li>
+<li><strong>State Management</strong>: A <code>HospitalFinderState</code> object, defined in <code>db/models.py</code>, is initialized to maintain the conversational context throughout the user interaction.</li>
+<li><strong>Conversational Start</strong>: The <code>hospital_finder_graph</code> (presumably defined in <code>graphs/hospital_graph.py</code>) is invoked with the initial state, kicking off the multi-turn dialogue.</li>
+</ol>
+<h2 id="2-dbmodelspy---pydantic-data-models">2. <code>db/models.py</code> - Pydantic Data Models</h2>
+<p>These models define the structured data formats used for communication, state management, and validation within the application.</p>
+<h3 id="llmresponsemodel"><code>LLMResponseModel</code></h3>
+<p>A Pydantic model for parsing and validating structured output from Language Model responses, typically used after a recognition step to interpret user intent and extract entities.</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>query</code> (str): The original query text.</li>
+<li><code>intent</code> (str): The detected intent of the user's query (e.g., &quot;find_nearest&quot;, &quot;find_best&quot;, &quot;find_by_insurance&quot;, &quot;find_by_hospital&quot;). This guides the subsequent actions in the conversational graph.</li>
+<li><code>location</code> (Optional[str]): Extracted geographical location relevant to the query.</li>
+<li><code>hospital_names</code> (Optional[List[str]]): Specific hospital names mentioned by the user.</li>
+<li><code>hospital_type</code> (List[str]): Desired hospital specialties or types.</li>
+<li><code>insurance</code> (List[str]): Insurance providers specified by the user.</li>
+<li><code>provider_name</code> (Optional[str]): Name of a specific insurance provider.</li>
+<li><code>n_hospitals</code> (Optional[int]): The requested number of hospitals to return, defaulting to 5.</li>
+<li><code>distance_km</code> (Optional[float]): The maximum search radius in kilometers, defaulting to 30000.</li>
+</ul>
+<h3 id="raggroundedresponsemodel"><code>RAGGroundedResponseModel</code></h3>
+<p>Represents the structured response generated after the Retrieval Augmented Generation (RAG) process, combining retrieved data with an LLM-generated narrative.</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>hospital_ids</code> (List[int]): A list of integer IDs corresponding to the hospitals identified as most relevant by the RAG process.</li>
+<li><code>dialogue</code> (str): A natural language dialogue string, generated by the LLM, that provides a human-friendly summary or recommendation based on the retrieved hospitals. This string is then used for text-to-speech conversion.</li>
+</ul>
+<h3 id="hospitalfinderstate"><code>HospitalFinderState</code></h3>
+<p>Manages the comprehensive state of a single conversational session, tracking all relevant information across multiple turns. This model is critical for LangGraph to maintain context.</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>uid</code> (str): A unique identifier for each conversation session.</li>
+<li><code>input_audio_path</code> (Optional[str]): File path to the raw audio input from the user.</li>
+<li><code>transcription</code> (Optional[dict]): The result of converting the user's audio input to text.</li>
+<li><code>recognition</code> (Optional[dict]): The structured data parsed from the transcription (e.g., <code>LLMResponseModel</code>'s content).</li>
+<li><code>clarify_user_response_audio_path</code> (Optional[str]): Path to user audio when clarification is requested by the bot.</li>
+<li><code>clarify_transcription</code> (Optional[dict]): Transcription of the user's clarification response.</li>
+<li><code>clarify_recognition</code> (Optional[dict]): Structured data from the clarification transcription.</li>
+<li><code>hospitals_found</code> (Optional[dict]): A dictionary storing information about hospitals retrieved during the session.</li>
+<li><code>clarify_bot_response_audio_path</code> (Optional[str]): Path to the bot's audio response when seeking clarification.</li>
+<li><code>turn_count</code> (int): Counter for the number of turns in the current conversation.</li>
+<li><code>last_question</code> (Optional[str]): Stores the last question asked by the bot to guide follow-up logic.</li>
+<li><code>final_response</code> (Optional[dict]): The final structured response provided by the bot for the user's query.</li>
+<li><code>final_response_text</code> (Optional[str]): The textual content of the final response.</li>
+<li><code>final_response_audio_path</code> (Optional[str]): File path to the audio version of the final response.</li>
+<li><code>user_wants_exit</code> (bool): A flag indicating if the user has signaled their intention to end the conversation.</li>
+</ul>
+<h3 id="ttsresponsemodel"><code>TTSResponseModel</code></h3>
+<p>A model to represent the output of Text-to-Speech operations, allowing for potential control over speech characteristics like tone.</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>dialogue</code> (str): The text content to be synthesized into speech.</li>
+<li><code>tone</code> (Optional[str]): An optional hint for the desired tone of the synthesized speech (e.g., 'friendly', 'informative').</li>
+</ul>
+<h2 id="3-dbmodulesfine_tunerpy---llm-fine-tuning">3. <code>db/modules/fine_tuner.py</code> - LLM Fine-Tuning</h2>
+<p>This module provides the functionality to fine-tune a pre-trained Large Language Model (LLM) using the QLoRA technique, specifically adapted for the hospital and insurance domain. The fine-tuning process refines the model's ability to generate relevant and accurate responses based on domain-specific data.</p>
+<h3 id="fine_tune_insurance_llmdata_path-str"><code>fine_tune_insurance_llm(data_path: str)</code></h3>
+<p>This asynchronously callable function orchestrates the entire QLoRA fine-tuning workflow for a causal language model. It's designed to be called during initial setup or when new fine-tuning data becomes available.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>data_path</code> (str): The file path to a JSON dataset containing instruction-response pairs specifically prepared for fine-tuning the LLM in the context of hospital and insurance queries.</li>
+</ul>
+<p><strong>Operational Flow</strong>:</p>
+<ol>
+<li><strong>Data Loading &amp; Formatting</strong>: Reads the JSON dataset and processes it into a format suitable for the LLM (instruction-context-response templates).</li>
+<li><strong>Model &amp; Tokenizer Initialization</strong>: Loads a base LLM (e.g., <code>openlm-research/open_llama_3b_v2</code>) and its corresponding tokenizer. Quantization (4-bit) is applied using <code>BitsAndBytesConfig</code> to reduce memory footprint, a key aspect of QLoRA.</li>
+<li><strong>PEFT Integration</strong>: The loaded base model is prepared for k-bit training and enhanced with LoRA (Low-Rank Adaptation) adapters using the PEFT (Parameter-Efficient Fine-Tuning) library. These adapters are strategically applied to target modules (e.g., attention projections) to enable efficient fine-tuning without modifying the entire model.</li>
+<li><strong>Dataset Tokenization</strong>: The pre-processed and formatted dataset is tokenized into input IDs and attention masks, truncated and padded to a maximum sequence length.</li>
+<li><strong>Training Configuration</strong>: <code>transformers.TrainingArguments</code> are configured, specifying parameters like batch size, learning rate, number of epochs, gradient accumulation steps, and logging/saving frequency.</li>
+<li><strong>Training Execution</strong>: A <code>transformers.Trainer</code> instance is created and initiates the fine-tuning process.</li>
+<li><strong>Model Saving</strong>: Upon completion, the fine-tuned model (specifically the LoRA adapters) and tokenizer are saved to a specified output directory, ready for deployment.</li>
+</ol>
+<h2 id="4-graphsgraph_toolspy---langchain-tools-for-graph">4. <code>graphs/graph_tools.py</code> - Langchain Tools for Graph</h2>
+<p>This module defines a set of Langchain <code>tool</code>s. These tools are asynchronous functions wrapped to be callable nodes within the LangGraph conversational flow, enabling the bot to perform specific actions like speech processing, NLU, and database lookups.</p>
+<h3 id="transcribe_audio_toolaudio_path-str-uid-str---dict"><code>transcribe_audio_tool(audio_path: str, uid: str) -&gt; dict</code></h3>
+<p>An asynchronous tool that converts spoken audio into text. It integrates with an external transcription service (e.g., OpenAI Whisper via <code>tools.transcribe.transcribe_wrapper</code>).</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>audio_path</code> (str): The file path of the audio recording to be transcribed.</li>
+<li><code>uid</code> (str): A unique identifier for the current user session, used for logging and tracking.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>dict</code>: Contains the session <code>uid</code>, the original <code>audio_path</code>, and the <code>transcribed_text</code>.</li>
+</ul>
+<h3 id="recognize_query_toolquery_text-str-uid-str-use_llm-bool--true---dict"><code>recognize_query_tool(query_text: str, uid: str, use_llm: bool = True) -&gt; dict</code></h3>
+<p>An asynchronous tool responsible for Named Entity Recognition (NER) and intent classification from a textual query. It delegates to <code>tools.recognize.recognize_wrapper</code> and can optionally leverage an LLM for more sophisticated understanding.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>query_text</code> (str): The text input (e.g., transcribed audio) to be analyzed.</li>
+<li><code>uid</code> (str): Unique session identifier.</li>
+<li><code>use_llm</code> (bool): A flag indicating whether to use an advanced LLM for recognition in addition to rule-based or statistical methods.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>dict</code>: A structured dictionary derived from <code>LLMResponseModel</code>, containing the <code>query</code>, detected <code>intent</code>, and extracted entities like <code>location</code>, <code>hospital_type</code>, and <code>insurance</code>.</li>
+</ul>
+<h3 id="text_to_speech_tooltext-str-uid-str-output_dir-str--audiosoutput-convert_to_dialogue-bool--false---dict"><code>text_to_speech_tool(text: str, uid: str, output_dir: str = &quot;audios/output&quot;, convert_to_dialogue: bool = False) -&gt; dict</code></h3>
+<p>An asynchronous tool that converts a given text string into an audio file, suitable for voice responses. It utilizes <code>tools.text_to_speech.text_to_speech_wrapper</code> and saves the output to a specified directory.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>text</code> (str): The dialogue text to be converted to speech.</li>
+<li><code>uid</code> (str): Unique session identifier.</li>
+<li><code>output_dir</code> (str): The directory where the generated audio file will be saved.</li>
+<li><code>convert_to_dialogue</code> (bool): A boolean flag, potentially used to trigger additional processing for dialogue-specific speech synthesis.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>dict</code>: Includes the session <code>uid</code>, the original <code>text</code>, and the <code>audio_path</code> of the generated speech file.</li>
+</ul>
+<h3 id="hospital_lookup_tool---listdict"><code>hospital_lookup_tool(...) -&gt; List[dict]</code></h3>
+<p>An asynchronous tool for performing a direct lookup of hospitals from the database based on geographical coordinates, intent, hospital types, and insurance providers. This tool calls <code>tools.hospital_lookup.hospital_lookup_wrapper</code>.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>user_lat</code> (float): Latitude of the user's current or specified location.</li>
+<li><code>user_lon</code> (float): Longitude of the user's current or specified location.</li>
+<li><code>intent</code> (str): The user's primary goal (e.g., &quot;find_nearest&quot;, &quot;find_best&quot;, &quot;find_all_in_radius&quot;).</li>
+<li><code>hospital_types</code> (Optional[List[str]]): A list of required hospital specialties.</li>
+<li><code>insurance_providers</code> (Optional[List[str]]): A list of accepted insurance providers for filtering.</li>
+<li><code>n_hospitals</code> (int): The desired number of top hospitals to retrieve.</li>
+<li><code>distance_km_radius</code> (float): The maximum search radius from the user's location.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>List[dict]</code>: A list of dictionaries, each representing a hospital that matches the criteria.</li>
+</ul>
+<h3 id="hospital_lookup_rag_tool---tuplelistdict-str"><code>hospital_lookup_rag_tool(...) -&gt; Tuple[List[dict], str]</code></h3>
+<p>An asynchronous tool that performs a Retrieval Augmented Generation (RAG) based search for hospitals. It leverages a FAISS vector database for semantic search and an LLM for grounding the retrieved results into a conversational dialogue. This tool depends on a pre-initialized <code>HospitalRAGRetriever</code> instance.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>intent</code> (str): The primary search intent (e.g., &quot;find_nearest&quot;, &quot;find_by_hospital&quot;).</li>
+<li><code>user_query</code> (Optional[str]): The original natural language query from the user.</li>
+<li><code>user_loc</code> (Optional[str]): User's location name.</li>
+<li><code>user_lat</code> (Optional[float]): User's latitude.</li>
+<li><code>user_lon</code> (Optional[float]): User's longitude.</li>
+<li><code>hospital_types</code> (Optional[List[str]]): Desired hospital specialties.</li>
+<li><code>hospital_names</code> (Optional[List[str]]): Specific hospital names to look for.</li>
+<li><code>insurance_providers</code> (Optional[List[str]]): Accepted insurance providers for filtering.</li>
+<li><code>n_hospitals</code> (int): Number of top hospitals to return.</li>
+<li><code>distance_km_radius</code> (float): Maximum search radius.</li>
+<li><code>extra_results</code> (int): Additional hospitals to retrieve from FAISS to provide richer context for LLM grounding.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>Tuple[List[dict], str]</code>: A tuple where the first element is a list of hospital dictionaries (retrieved and selected), and the second is a natural language <code>dialogue</code> string generated by the LLM.</li>
+</ul>
+<h2 id="5-toolsrag_retrievepy---hospital-rag-retriever">5. <code>tools/rag_retrieve.py</code> - Hospital RAG Retriever</h2>
+<p>This module encapsulates the core logic for Retrieval Augmented Generation (RAG) in the context of hospital search. It manages the interaction with the FAISS vector database for efficient retrieval and an LLM for contextual grounding of the search results.</p>
+<h3 id="class-hospitalragretriever"><code>class HospitalRAGRetriever</code></h3>
+<p>The <code>HospitalRAGRetriever</code> class is responsible for loading the hospital vector database, managing the (optional) fine-tuned LLM, performing semantic searches, and grounding the results into human-readable responses.</p>
+<h4 id="__init__self-vector_db_path_override-str--none"><code>__init__(self, vector_db_path_override: str = None)</code></h4>
+<p>Initializes the <code>HospitalRAGRetriever</code> by setting up the embedding model, loading the FAISS vector database from a specified path, and conditionally loading a fine-tuned LLM if the <code>GROUND_WITH_FINE_TUNE</code> configuration flag is enabled.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>vector_db_path_override</code> (str, optional): An optional path to override the default FAISS vector database location.</li>
+</ul>
+<p><strong>Internal Operations</strong>:</p>
+<ul>
+<li><code>_load_vector_db()</code>: Handles the loading of the FAISS vector database using <code>FAISS.load_local</code>.</li>
+<li><code>_load_finetuned_model()</code>: Loads a PEFT-wrapped fine-tuned model and its tokenizer (e.g., from a QLoRA training) to enable specialized response generation for certain intents.</li>
+<li><code>_haversine_distance()</code>: A static utility method for calculating geographical distances, used for filtering hospitals by radius.</li>
+<li><code>_build_query()</code>: A static utility method that constructs a natural language query string based on the user's structured input, optimizing it for semantic search in the vector database.</li>
+</ul>
+<h4 id="retrieveself-user_input-dict-extra_results-int--2---listdict"><code>retrieve(self, user_input: Dict, extra_results: int = 2) -&gt; List[Dict]</code></h4>
+<p>Executes a similarity search against the FAISS vector database using a query derived from <code>user_input</code>. The results are then filtered by geographical distance and sorted based on the user's specified <code>intent</code> (e.g., &quot;find_nearest&quot; prioritizes distance, &quot;find_best&quot; prioritizes rating).</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>user_input</code> (Dict): A dictionary containing various search parameters from the user's query, such as geographical coordinates (<code>user_lat</code>, <code>user_lon</code>), desired number of hospitals (<code>n_hospitals</code>), search radius (<code>distance_km_radius</code>), <code>intent</code>, hospital names, types, and insurance providers.</li>
+<li><code>extra_results</code> (int): An additional number of results to fetch from the vector database beyond <code>n_hospitals</code>. These extra results provide more context for the subsequent LLM grounding step, potentially leading to more robust responses.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>List[Dict]</code>: A sorted list of dictionaries, where each dictionary represents a hospital and includes calculated fields like <code>distance_km</code>.</li>
+</ul>
+<h4 id="ground_with_qloraself-user_query-str-retrieved_hospitals-listdict---str"><code>ground_with_qlora(self, user_query: str, retrieved_hospitals: List[dict]) -&gt; str</code></h4>
+<p>Generates a concise, natural language response by leveraging the fine-tuned QLoRA model. This method is specifically employed when <code>GROUND_WITH_FINE_TUNE</code> is active and the intent is to address specific hospital inquiries (e.g., &quot;find_by_hospital&quot;). It constructs a prompt by combining the user's query with the details of the retrieved hospitals and generates a contextualized response.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>user_query</code> (str): The user's original query text.</li>
+<li><code>retrieved_hospitals</code> (List[dict]): A list of dictionaries, each detailing a hospital already identified as relevant by the <code>retrieve</code> method.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>str</code>: An LLM-generated dialogue string that directly addresses the user's query using the context of the provided hospitals.</li>
+</ul>
+<h4 id="ground_resultsself-user_input-dict-retrieved_hospitals-listdict---raggroundedresponsemodel"><code>ground_results(self, user_input: dict, retrieved_hospitals: List[dict]) -&gt; RAGGroundedResponseModel</code></h4>
+<p>This is the primary method for grounding retrieved hospital data into a conversational response. It intelligently decides whether to use the specialized fine-tuned QLoRA model (if configured and appropriate for the intent) or a general-purpose LLM to generate the final dialogue. The method constructs a detailed prompt for the chosen LLM, incorporating user input and the context of the retrieved hospitals.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>user_input</code> (dict): The complete set of user query parameters.</li>
+<li><code>retrieved_hospitals</code> (List[dict]): The list of hospitals that were initially retrieved from the vector database.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>RAGGroundedResponseModel</code>: A Pydantic model containing the IDs of the hospitals that should be highlighted in the response and the generated natural language dialogue.</li>
+</ul>
+<h3 id="rag_search_wrapperretriever-hospitalragretriever-"><code>rag_search_wrapper(retriever: HospitalRAGRetriever, ...)</code></h3>
+<p>An asynchronous wrapper function that orchestrates the entire RAG search process. It takes user input, performs retrieval, and then grounds the results, returning both the structured hospital data and an LLM-generated dialogue.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>retriever</code> (HospitalRAGRetriever): An initialized instance of the <code>HospitalRAGRetriever</code>.</li>
+<li>Additional parameters are the same as those for <code>hospital_lookup_rag_tool</code>, covering user query details, location, intent, and filtering criteria.</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>Tuple[List[dict], List[dict], str]</code>: A tuple containing:
+<ul>
+<li>The complete list of hospitals retrieved by the vector database search.</li>
+<li>A refined list of hospitals selected after the grounding process.</li>
+<li>The LLM-generated natural language dialogue string.</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-langgraph-conversational-flow-conceptual">6. LangGraph Conversational Flow (Conceptual)</h2>
+<p>The <code>hospital_finder_graph</code> (defined in <code>graphs/hospital_graph.py</code>, though not directly reviewed here) is the central orchestration mechanism for the bot's multi-turn conversations. It uses the LangGraph framework to manage state transitions and tool invocations.</p>
+<p><strong>High-Level Flow</strong>:</p>
+<ol>
+<li><strong>Initial Input</strong>: The process begins with the user's audio input, which updates the <code>HospitalFinderState</code>.</li>
+<li><strong>Transcription</strong>: The <code>transcribe_audio_tool</code> (from <code>graphs/graph_tools.py</code>) is called to convert the audio to text.</li>
+<li><strong>Query Recognition</strong>: The <code>recognize_query_tool</code> analyzes the transcribed text to extract user intent (<code>LLMResponseModel</code>) and entities, updating the state.</li>
+<li><strong>Intent Routing</strong>: Based on the extracted <code>intent</code>, the graph routes the flow.
+<ul>
+<li>If a hospital search is needed (e.g., &quot;find_nearest&quot;, &quot;find_by_hospital&quot;), the <code>hospital_lookup_rag_tool</code> is invoked. This tool internally uses the <code>HospitalRAGRetriever</code> to:
+<ul>
+<li>Perform a semantic search in the FAISS vector database.</li>
+<li>Ground the retrieved results using an LLM (potentially fine-tuned) to generate relevant dialogue (<code>RAGGroundedResponseModel</code>).</li>
+</ul>
+</li>
+<li>Other intents might lead to different tools or clarification steps.</li>
+</ul>
+</li>
+<li><strong>Clarification/Response Generation</strong>: The graph might enter a clarification loop if more information is needed from the user. Otherwise, it prepares a final response.</li>
+<li><strong>Text-to-Speech</strong>: The <code>text_to_speech_tool</code> converts the generated dialogue into audio, completing the conversational turn.</li>
+<li><strong>State Update</strong>: The <code>HospitalFinderState</code> is continuously updated at each step, persisting the conversation's context.</li>
+</ol>
+<p>This modular structure allows for flexible and robust conversational management, dynamically invoking the appropriate tools and LLM functionalities based on the evolving dialogue.</p>
+
+<div class="footer">Hospital Finder Assistant · Built October 2025 · Navin Pandiyan</div>
+</div>
+</body>
+</html>

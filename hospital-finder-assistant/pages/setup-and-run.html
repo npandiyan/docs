@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Setup &amp; Run Guide — Hospital Finder Assistant</title>
+<style>
+  :root{--bg:#0b0f17;--card:#131c2e;--card2:#172238;--line:#243049;--txt:#e7ecf5;
+    --mut:#9aa7bd;--acc:#4f8cff;--acc2:#37d3a8;--warn:#ffb454}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 600px at 85% -10%,#16233f 0%,transparent 60%),var(--bg);
+    color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(11,15,23,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:12px 22px;display:flex;gap:16px;align-items:center}
+  .bar a{color:var(--acc);text-decoration:none;font-size:14px;font-weight:600}
+  .bar a:hover{text-decoration:underline}
+  .bar .crumb{color:var(--mut);font-size:13px}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 80px}
+  h1,h2,h3,h4{scroll-margin-top:64px}
+  h1{font-size:32px;line-height:1.15;letter-spacing:-.4px;margin:0 0 6px}
+  h2{font-size:23px;margin:42px 0 12px;padding-top:14px;border-top:1px solid var(--line);letter-spacing:-.2px}
+  h3{font-size:18px;margin:28px 0 8px;color:var(--acc2)}
+  h4{font-size:15px;margin:20px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+  p,li{color:#d7deec}
+  a{color:var(--acc)}
+  ul,ol{padding-left:22px} li{margin:5px 0}
+  code{background:#0a0e16;border:1px solid var(--line);border-radius:5px;padding:1.5px 6px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#9fe7cf}
+  pre{background:#0a0e16;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto}
+  pre code{background:none;border:none;padding:0;color:#cdd6e6;font-size:13.5px;line-height:1.7}
+  blockquote{margin:16px 0;padding:10px 18px;border-left:3px solid var(--acc);
+    background:var(--card);border-radius:0 10px 10px 0;color:var(--mut)}
+  blockquote p{margin:6px 0;color:var(--mut)}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:14.5px;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:var(--txt);font-weight:600}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+  .footer{color:var(--mut);font-size:13px;margin-top:50px;text-align:center;border-top:1px solid var(--line);padding-top:22px}
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html">← Project Hub</a><span class="crumb">/ Setup &amp; Run Guide</span></div>
+<div class="wrap">
+<h1 id="setup-amp-run-guide--voice-hospital-finder-bot">Setup &amp; Run Guide — Voice Hospital Finder Bot</h1>
+<p>This guide walks through installing, configuring, and running the project from a clean machine.
+For the architecture and design, see <a href="documentation.html"><code>DOCUMENTATION.md</code></a> and
+<a href="source-code-reference.html"><code>SOURCE_CODE_DOCUMENTATION.md</code></a>.</p>
+<hr />
+<h2 id="1-prerequisites">1. Prerequisites</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python 3.11</strong> (pinned to <code>3.11.14</code>)</td>
+<td>Required — see <code>pyproject.toml</code>.</td>
+</tr>
+<tr>
+<td><strong>uv</strong></td>
+<td>Modern Python package/venv manager (recommended). <code>pip</code> also works.</td>
+</tr>
+<tr>
+<td><strong>OpenAI API key</strong></td>
+<td>Used for Whisper STT, embeddings, and TTS.</td>
+</tr>
+<tr>
+<td><strong>LLM API key + base URL</strong></td>
+<td>For intent recognition, clarification and RAG grounding (OpenAI / OpenRouter / any OpenAI-compatible endpoint). Default model is <code>google/gemini-2.0-flash-001</code>.</td>
+</tr>
+<tr>
+<td><strong>Microphone + speakers</strong></td>
+<td>Only needed for <strong>voicebot</strong> mode (PyAudio / ffmpeg). Not required for the default text <strong>chatbot</strong> mode.</td>
+</tr>
+<tr>
+<td><strong>(Optional) CUDA GPU</strong></td>
+<td>Recommended if you want to run/serve the QLoRA fine-tuned model. CPU works but is slow. A pre-trained adapter ships under <code>data/rag_llm/</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-clone-the-repository">2. Clone the repository</h2>
+<pre><code class="language-bash">git clone https://github.com/navinpandiyan/hospital-finder-assistant.git
+cd hospital-finder-assistant
+</code></pre>
+<hr />
+<h2 id="3-install-dependencies">3. Install dependencies</h2>
+<h3 id="option-a--uv-recommended">Option A — uv (recommended)</h3>
+<pre><code class="language-bash">pip install uv      # if you don't already have it
+uv sync             # creates .venv/ and installs everything from pyproject.toml / uv.lock
+</code></pre>
+<h3 id="option-b--pip--virtualenv">Option B — pip + virtualenv</h3>
+<pre><code class="language-bash">python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
+
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm   # if the spaCy model isn't pulled automatically
+</code></pre>
+<blockquote>
+<p><strong>Note on Torch:</strong> <code>pyproject.toml</code> pins CUDA 12.4 Windows wheels for <code>torch</code> /
+<code>torchvision</code> / <code>torchaudio</code>. On a different OS or without a GPU, install the matching
+CPU/GPU build of PyTorch for your platform instead.</p>
+</blockquote>
+<hr />
+<h2 id="4-configure-environment-variables">4. Configure environment variables</h2>
+<p>Create a <code>.env</code> file in the project root:</p>
+<pre><code class="language-dotenv">OPENAI_API_KEY=&quot;sk-...&quot;                       # Whisper STT, embeddings, TTS
+LLM_API_KEY=&quot;...&quot;                             # recognition / clarification / RAG grounding
+LLM_BASE_URL=&quot;https://openrouter.ai/api/v1&quot;   # or https://api.openai.com/v1, etc.
+</code></pre>
+<blockquote>
+<p>The <code>.env</code> file is git-ignored — never commit real keys. Only <code>.env.example</code>-style
+templates should be checked in.</p>
+</blockquote>
+<hr />
+<h2 id="5-choose-your-mode-and-settings-optional">5. Choose your mode and settings (optional)</h2>
+<p>All runtime behavior lives in <a href="https://github.com/navinpandiyan/hospital-finder-assistant/blob/main/settings/config.py"><code>settings/config.py</code></a>. The most useful knobs:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODE</code></td>
+<td><code>&quot;chatbot&quot;</code></td>
+<td><code>&quot;chatbot&quot;</code> = type your queries; <code>&quot;voicebot&quot;</code> = speak and hear replies.</td>
+</tr>
+<tr>
+<td><code>SHOW_LOGS</code></td>
+<td><code>False</code></td>
+<td>Set <code>True</code> to see detailed console logs.</td>
+</tr>
+<tr>
+<td><code>USE_LLM_FOR_RECOGNITION</code></td>
+<td><code>True</code></td>
+<td><code>True</code> = LLM intent/entity recognition; <code>False</code> = spaCy NER + fuzzy matching.</td>
+</tr>
+<tr>
+<td><code>LOOKUP_MODE</code></td>
+<td><code>&quot;rag&quot;</code></td>
+<td><code>&quot;rag&quot;</code> = FAISS + LLM grounding; <code>&quot;simple&quot;</code> = direct DB lookup.</td>
+</tr>
+<tr>
+<td><code>GROUND_WITH_FINE_TUNE</code></td>
+<td><code>True</code></td>
+<td>Use the local QLoRA model for <code>find_by_hospital</code> queries. Set <code>False</code> to skip loading it (no GPU needed).</td>
+</tr>
+<tr>
+<td><code>TEXT_TO_DIALOGUE</code></td>
+<td><code>False</code></td>
+<td>Rewrite factual answers into a warmer spoken style before TTS.</td>
+</tr>
+<tr>
+<td><code>RECOGNIZER_MODEL</code> / <code>RAG_GROUNDER_MODEL</code></td>
+<td><code>google/gemini-2.0-flash-001</code></td>
+<td>Swap in any OpenAI-compatible model.</td>
+</tr>
+<tr>
+<td><code>MAX_TURNS</code></td>
+<td><code>25</code></td>
+<td>Max clarification turns before giving up.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Fastest first run / no GPU:</strong> keep <code>MODE=&quot;chatbot&quot;</code> and set
+<code>GROUND_WITH_FINE_TUNE=False</code> to avoid loading the fine-tuned model.</p>
+</blockquote>
+<hr />
+<h2 id="6-run-the-application">6. Run the application</h2>
+<pre><code class="language-bash">uv run app.py
+# or, with an activated venv:
+python app.py
+</code></pre>
+<h3 id="what-happens-on-the-first-run">What happens on the first run</h3>
+<p>The app bootstraps everything it needs (idempotent — it skips anything already present):</p>
+<ol>
+<li><strong>Seeds the database</strong> — generates 150 synthetic hospitals + 20 insurance plans into <code>data/hospitals.sqlite</code>.</li>
+<li><strong>Links</strong> hospitals to insurance plans (many-to-many).</li>
+<li><strong>Builds the FAISS vector DB</strong> from the hospital records (<code>data/vdb_hospitals/</code>).</li>
+<li><strong>Generates fine-tuning data</strong> (<code>data/insurance_data.json</code>) if missing.</li>
+<li><strong>Fine-tunes the QLoRA model</strong> into <code>data/rag_llm/</code> <em>only if that folder doesn't already exist</em> (a pre-trained adapter is included, so this is normally skipped).</li>
+<li><strong>Launches the bot</strong> — you'll see <code>Bot: Hello! I am your hospital assistant...</code></li>
+</ol>
+<p>Subsequent runs reuse the existing DB, vector store and model, so they start quickly.</p>
+<hr />
+<h2 id="7-try-it-out">7. Try it out</h2>
+<p>Type (or speak, in voicebot mode) queries like:</p>
+<pre><code class="language-text">Find the nearest cardiology hospital in Abu Dhabi
+Show me the best dental hospital in Dubai covered by Daman
+What insurance does Mleiha ENT Clinic accept?
+Compare Mleiha ENT Clinic and Dubai Dental &amp; Obstetrics Care Hub
+thanks, that's all      ← ends the conversation
+</code></pre>
+<p>Each completed conversation turn is saved as a JSON transcript under <code>outputs/</code>
+(see the samples already in that folder).</p>
+<hr />
+<h2 id="8-project-layout">8. Project layout</h2>
+<pre><code>hospital-finder-assistant/
+├── app.py                  # entry point — wires up RAG retriever + LangGraph
+├── settings/               # config, prompts, LLM client, logging
+├── graphs/                 # LangGraph state machine (nodes, edges) + tools
+├── tools/                  # transcribe, recognize, TTS, lookup, RAG retrieve, record
+├── db/                     # Pony ORM models, DB bootstrap
+│   └── modules/            # synthetic data + vector DB + fine-tune generators
+├── data/                   # SQLite DB, FAISS index, fine-tuned QLoRA adapter
+├── utils/                  # helpers (geocoding, audio, state save)
+├── outputs/                # saved conversation transcripts
+└── docs/                   # this guide, documentation, slide deck, diagram
+</code></pre>
+<hr />
+<h2 id="9-troubleshooting">9. Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spaCy model 'en_core_web_sm' not found</code></td>
+<td><code>python -m spacy download en_core_web_sm</code></td>
+</tr>
+<tr>
+<td>Torch / CUDA install errors</td>
+<td>Install the PyTorch build matching your OS/GPU from pytorch.org, then re-run.</td>
+</tr>
+<tr>
+<td>Slow startup or OOM loading the model</td>
+<td>Set <code>GROUND_WITH_FINE_TUNE = False</code> in <code>settings/config.py</code> (skips the local LLM).</td>
+</tr>
+<tr>
+<td>No audio / PyAudio errors in voicebot mode</td>
+<td>Use <code>MODE = &quot;chatbot&quot;</code>, or install PortAudio/ffmpeg and check mic permissions.</td>
+</tr>
+<tr>
+<td>Auth / 401 errors</td>
+<td>Verify <code>OPENAI_API_KEY</code>, <code>LLM_API_KEY</code> and <code>LLM_BASE_URL</code> in <code>.env</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Built October 2025 as an interview case study.</em></p>
+
+<div class="footer">Hospital Finder Assistant · Built October 2025 · Navin Pandiyan</div>
+</div>
+</body>
+</html>

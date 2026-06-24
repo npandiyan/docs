@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navin Pandiyan - Resume</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 16mm 14mm 16mm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: #1a1a2e;
+    max-width: 210mm;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  /* === HEADER === */
+  .header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2.5px solid #0f3460;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #0f3460;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .header .title {
+    font-size: 11pt;
+    color: #16537e;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .header .contact {
+    font-size: 8.5pt;
+    color: #4a4a6a;
+  }
+
+  .header .contact span {
+    margin: 0 6px;
+  }
+
+  .header .contact .sep {
+    color: #b0b0c0;
+  }
+
+  /* === IMPACT BOX === */
+  .impact-box {
+    background: #f0f4fa;
+    border-left: 4px solid #0f3460;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+
+  .impact-box ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 0;
+  }
+
+  .impact-box li {
+    width: 50%;
+    font-size: 8.5pt;
+    color: #1a1a2e;
+    padding: 2px 0;
+    padding-right: 8px;
+  }
+
+  .impact-box li strong {
+    color: #0f3460;
+  }
+
+  /* === SECTIONS === */
+  .section {
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #0f3460;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-bottom: 1.5px solid #d0d8e8;
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+  }
+
+  /* === SKILLS === */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 0;
+  }
+
+  .skill-row {
+    width: 100%;
+    font-size: 8.8pt;
+    line-height: 1.5;
+    padding: 1px 0;
+  }
+
+  .skill-row .label {
+    font-weight: 600;
+    color: #16537e;
+    display: inline;
+  }
+
+  /* === EXPERIENCE === */
+  .exp-item {
+    margin-bottom: 8px;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1px;
+  }
+
+  .exp-header .role {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .exp-header .dates {
+    font-size: 8.5pt;
+    color: #6a6a8a;
+    white-space: nowrap;
+  }
+
+  .exp-company {
+    font-size: 9pt;
+    color: #16537e;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .exp-bullets li {
+    font-size: 9pt;
+    padding: 1px 0 1px 12px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .exp-bullets li::before {
+    content: "\25B8";
+    position: absolute;
+    left: 0;
+    color: #16537e;
+    font-size: 8pt;
+  }
+
+  /* === PROJECTS === */
+  .project-item {
+    margin-bottom: 6px;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .project-header .name {
+    font-weight: 700;
+    font-size: 9.5pt;
+    color: #1a1a2e;
+  }
+
+  .project-header .tech {
+    font-size: 8pt;
+    color: #6a6a8a;
+    font-style: italic;
+  }
+
+  .project-desc {
+    font-size: 8.8pt;
+    color: #3a3a5a;
+    padding-left: 0;
+    margin-top: 1px;
+  }
+
+  .project-desc li {
+    padding: 1px 0 1px 12px;
+    position: relative;
+    line-height: 1.35;
+  }
+
+  .project-desc li::before {
+    content: "\25B8";
+    position: absolute;
+    left: 0;
+    color: #16537e;
+    font-size: 8pt;
+  }
+
+  .highlight {
+    color: #0f3460;
+    font-weight: 600;
+  }
+
+  /* === EDUCATION === */
+  .edu-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    padding: 1px 0;
+  }
+
+  .edu-item .degree {
+    font-weight: 600;
+  }
+
+  .edu-item .school {
+    color: #4a4a6a;
+  }
+
+  .edu-item .year {
+    color: #6a6a8a;
+    font-size: 8.5pt;
+  }
+
+  /* === CERTIFICATIONS === */
+  .certs {
+    font-size: 8.5pt;
+    color: #3a3a5a;
+    line-height: 1.5;
+  }
+
+  .tag {
+    display: inline-block;
+    background: #e8eef6;
+    color: #16537e;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 8pt;
+    margin: 1px 2px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#0b0f17;border-bottom:1px solid #243049;padding:9px 18px;font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:13.5px;display:flex;gap:18px;align-items:center"><a href="../index.html" style="color:#4f8cff;text-decoration:none;font-weight:600">&larr; Project Hub</a><a href="../assets/Navin_Pandiyan_Resume.pdf" style="color:#37d3a8;text-decoration:none;font-weight:600">&#8681; Download PDF</a><span style="color:#9aa7bd">Resume &mdash; Navin Pandiyan</span></div><div style="height:42px"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Navin Pandiyan</h1>
+  <div class="title">Lead AI Developer & ML Engineer</div>
+  <div class="contact">
+    <span>Bangalore, India</span>
+    <span class="sep">|</span>
+    <a href="mailto:navinpandiyan@gmail.com" style="color:#4a4a6a; text-decoration:none;">&#9993; navinpandiyan@gmail.com</a>
+    <span class="sep">|</span>
+    <a href="https://linkedin.com/in/navinpandiyan" target="_blank" style="color:#0077B5; text-decoration:none;">&#128279; linkedin.com/in/navinpandiyan</a>
+    <span class="sep">|</span>
+    <a href="https://github.com/npandiyan" target="_blank" style="color:#333; text-decoration:none;">&#128187; github.com/npandiyan</a>
+  </div>
+</div>
+
+<!-- IMPACT HIGHLIGHTS -->
+<div class="impact-box">
+  <ul>
+    <li><strong>70% automation</strong> of HTML review workflows via AI pipeline (SmartHTML)</li>
+    <li><strong>60% time savings</strong> in daily research curation via LLM pipeline (NewsAI)</li>
+    <li><strong>28% efficiency gain</strong> in debt collection across 800K+ accounts</li>
+    <li><strong>8+ end-to-end apps</strong> designed, built & deployed (DB to cloud infra)</li>
+  </ul>
+</div>
+
+<!-- PROFESSIONAL SUMMARY -->
+<div class="section">
+  <div class="section-title">Professional Summary</div>
+  <p style="font-size:9pt; line-height:1.5;">
+    Lead AI Developer & ML Engineer with 7+ years delivering end-to-end AI-powered systems across healthcare, fintech, publishing, and enterprise domains. Expert in LangGraph-based agentic systems, serverless AWS architectures, production ML platforms, and LLM integration (OpenAI, Anthropic Claude). Proven track record of architecting, developing, and deploying complex AI pipelines from data ingestion to cloud infrastructure. Active Claude Code power user leveraging AI-native development workflows.
+  </p>
+</div>
+
+<!-- TECHNICAL SKILLS -->
+<div class="section">
+  <div class="section-title">Technical Skills</div>
+  <div class="skills-grid">
+    <div class="skill-row"><span class="label">AI/LLM:</span> LangGraph, LangChain, RAG (pgvector, FAISS), Multi-Agent Systems, MCP, Prompt Engineering, deepagents</div>
+    <div class="skill-row"><span class="label">LLM Providers:</span> Claude (Anthropic), GPT-4o/o1 (OpenAI), Gemini (Google), DeepSeek, Ollama</div>
+    <div class="skill-row"><span class="label">ML/DS:</span> XGBoost, CatBoost, LightGBM, PyTorch, Transformers, PEFT/LoRA/QLoRA, SHAP, scikit-learn, spaCy</div>
+    <div class="skill-row"><span class="label">Backend:</span> Python, FastAPI, SQLAlchemy 2.0 (async), Redis, WebSockets, Socket.IO, Celery</div>
+    <div class="skill-row"><span class="label">Data Platforms:</span> Databricks, Spark SQL, Snowflake, MLflow, Alembic, Feature Stores</div>
+    <div class="skill-row"><span class="label">Cloud/AWS:</span> Lambda (10GB), EC2, ECS Fargate, S3, RDS, Cognito, CloudFront, SQS, SAM/CloudFormation</div>
+    <div class="skill-row"><span class="label">Databases:</span> PostgreSQL (+pgvector), MongoDB, Neo4j, Azure Cosmos DB, MySQL, DynamoDB</div>
+    <div class="skill-row"><span class="label">CV/NLP:</span> OpenCV (ORB/SIFT), Azure OpenAI Vision, Tesseract OCR, Playwright, NLTK</div>
+    <div class="skill-row"><span class="label">DevOps:</span> Docker, Docker Compose, Nginx, GitHub Actions, ECR, CI/CD</div>
+    <div class="skill-row"><span class="label">AI Tools:</span> Claude Code CLI (daily driver), MCP servers, YAML prompt templates, agentic TDD workflows</div>
+  </div>
+</div>
+
+<!-- PROFESSIONAL EXPERIENCE -->
+<div class="section">
+  <div class="section-title">Professional Experience</div>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="role">Lead AI Developer</span>
+      <span class="dates">August 2024 - Present</span>
+    </div>
+    <div class="exp-company">Digit88, Bangalore</div>
+    <ul class="exp-bullets">
+      <li>Designed & deployed <strong>SmartHTML</strong>, a multi-stage AWS Lambda pipeline (SQS-orchestrated) that automates PDF-to-HTML review workflows using computer vision (ORB/SIFT + dhash) and LangGraph+MCP agents, <span class="highlight">reducing developer time by 70%</span> (1-2 hrs to ~25 min per asset)</li>
+      <li>Built <strong>NewsAI</strong>, a LangGraph-orchestrated agentic newsletter platform with multi-provider LLM support, replacing <span class="highlight">6 hours of daily analyst work with 10-minute automated runs</span>, processing 200-300 articles in 15-20 min</li>
+      <li>Developed <strong>AutoDoc AI</strong>, a LangGraph-based codebase intelligence platform that analyzes repositories to surface architectural insights, vulnerabilities, and improvement areas - with a roadmap toward agentic developer workflows (automated refactoring, PR generation, Jira integration) and a validation/audit layer for architecture screening</li>
+    </ul>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="role">Senior Data Science Analyst II</span>
+      <span class="dates">July 2023 - August 2024</span>
+    </div>
+    <div class="exp-company">Dun & Bradstreet, Chennai</div>
+    <ul class="exp-bullets">
+      <li>Led the <strong>CollectorAssist ML Platform</strong> with multi-model system (ITP, PRE, PTP, RTtC) on Databricks, <span class="highlight">increasing debt collection efficiency by 28% and agent success rates by 36%</span> across 800K+ accounts</li>
+      <li>Built SuperModel training framework across 5 business units with automated daily scoring, model versioning (UUID-based), and probability calibration (CalibratedClassifierCV)</li>
+      <li>Implemented T-Learner causal inference models for heterogeneous treatment effects; automated MLOps pipelines with MLflow and Databricks Job Schedulers</li>
+      <li>Built explainable AI dashboards (SHAP/LIME) for transparent insights and client adoption</li>
+    </ul>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="role">Data Scientist - Consultant</span>
+      <span class="dates">December 2022 - August 2024</span>
+    </div>
+    <div class="exp-company">Remote (Freelance)</div>
+    <ul class="exp-bullets">
+      <li>Played a crucial role as Lead AI Developer & Backend Engineer on <strong>CareInsight AI</strong>, driving the healthcare analytics product to client go-live deadlines by building the LLM-based KPI extraction pipeline, full i18n translation layer, and automated form fillers for patient data using structured document retrieval</li>
+      <li>Delivered cloud cost optimization and anomaly detection frameworks, reducing unnecessary cloud expenditure by 20% through predictive analytics and real-time alerts</li>
+    </ul>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="role">Senior Data Scientist / Data Scientist</span>
+      <span class="dates">January 2019 - December 2022</span>
+    </div>
+    <div class="exp-company">Pitney Bowes, Pune</div>
+    <ul class="exp-bullets">
+      <li>Developed NLP pipelines for document classification achieving <span class="highlight">94% accuracy across 100K+ records</span>; built reusable feature engineering toolkits reducing preprocessing time by 35%</li>
+      <li>Led forecasting, object detection, and anomaly detection projects for shipping/eCommerce logistics including customs optimization, HS code classification, and warehouse volume prediction</li>
+    </ul>
+  </div>
+</div>
+
+<!-- KEY PROJECTS -->
+<div class="section">
+  <div class="section-title">Key Projects (Designed, Built & Deployed End-to-End)</div>
+
+  <div class="project-item">
+    <div class="project-header">
+      <span class="name">Bharat2Business</span>
+      <span class="tech">FastAPI, LangGraph RAG, AWS (Cognito/RDS/Lambda/S3/EC2/CloudFront), pgvector</span>
+    </div>
+    <ul class="project-desc" style="list-style:none; padding:0;">
+      <li>B2B MSME platform with multi-node LangGraph RAG agent, automated KB pipeline (Crawl4AI + Docling + BGE-M3), 14 API routers, fully deployed on AWS with SAM/CloudFormation IaC</li>
+    </ul>
+  </div>
+
+  <div class="project-item">
+    <div class="project-header">
+      <span class="name">SmartHTML</span>
+      <span class="tech">5 AWS Lambdas, SQS, OpenCV, Azure Vision, LangGraph+MCP, Playwright, Docker</span>
+    </div>
+    <ul class="project-desc" style="list-style:none; padding:0;">
+      <li>Multi-stage serverless pipeline automating PDF annotation-to-HTML updates; two-tier vision matching (dhash + ORB/SIFT), Playwright state discovery, LangGraph+MCP edit agents; 70% automation rate within 8 min</li>
+    </ul>
+  </div>
+
+  <div class="project-item">
+    <div class="project-header">
+      <span class="name">NewsAI</span>
+      <span class="tech">LangGraph, multi-provider LLM, Socket.IO, Neo4j, AWS Lambda</span>
+    </div>
+    <ul class="project-desc" style="list-style:none; padding:0;">
+      <li>LangGraph-orchestrated newsletter curation platform replacing 6 hrs/day of analyst work; guided/auto modes, LLM article ranking, parallel summarization, multi-tenant via Neo4j, daily newsletters in under 10 min</li>
+    </ul>
+  </div>
+
+  <div class="project-item">
+    <div class="project-header">
+      <span class="name">AutoDoc AI</span>
+      <span class="tech">LangGraph, PostgreSQL checkpoints, Mermaid, AWS Cognito, S3, deepagents</span>
+    </div>
+    <ul class="project-desc" style="list-style:none; padding:0;">
+      <li>AI-powered codebase intelligence platform that analyzes repos, identifies pitfalls, and generates technical discovery documents; roadmap includes agentic developer workflows (automated refactoring, MCP-based PR generation) and architecture validation/audit layer</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="section">
+  <div class="section-title">Education</div>
+  <div class="edu-item">
+    <div><span class="degree">M.Tech in Data Science & Engineering</span> <span class="school">- BITS Pilani</span></div>
+    <span class="year">2021 - 2023</span>
+  </div>
+  <div class="edu-item">
+    <div><span class="degree">B.Tech</span> <span class="school">- SSN College of Engineering</span></div>
+    <span class="year">2013 - 2017</span>
+  </div>
+  <div class="edu-item">
+    <div><span class="degree">PG Diploma in Data Science & Analytics</span> <span class="school">- Imarticus Learning</span></div>
+    <span class="year">2018</span>
+  </div>
+</div>
+
+<!-- CERTIFICATIONS -->
+<div class="section">
+  <div class="section-title">Certifications</div>
+  <div class="certs">
+    <span class="tag">Deep Learning Specialization</span>
+    <span class="tag">NLP Specialization</span>
+    <span class="tag">TensorFlow Developer</span>
+    <span class="tag">MLOps Specialization</span>
+    <span class="tag">AWS Data Science</span>
+    <span class="tag">ML Specialization</span>
+    <span class="tag">Azure ML</span>
+    <span style="font-size:8pt; color:#6a6a8a; margin-left:4px;">- All DeepLearning.AI / Coursera (2021-2023)</span>
+  </div>
+</div>
+
+</body>
+</html>

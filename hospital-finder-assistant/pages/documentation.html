@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Project Documentation — Hospital Finder Assistant</title>
+<style>
+  :root{--bg:#0b0f17;--card:#131c2e;--card2:#172238;--line:#243049;--txt:#e7ecf5;
+    --mut:#9aa7bd;--acc:#4f8cff;--acc2:#37d3a8;--warn:#ffb454}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 600px at 85% -10%,#16233f 0%,transparent 60%),var(--bg);
+    color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(11,15,23,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:12px 22px;display:flex;gap:16px;align-items:center}
+  .bar a{color:var(--acc);text-decoration:none;font-size:14px;font-weight:600}
+  .bar a:hover{text-decoration:underline}
+  .bar .crumb{color:var(--mut);font-size:13px}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 80px}
+  h1,h2,h3,h4{scroll-margin-top:64px}
+  h1{font-size:32px;line-height:1.15;letter-spacing:-.4px;margin:0 0 6px}
+  h2{font-size:23px;margin:42px 0 12px;padding-top:14px;border-top:1px solid var(--line);letter-spacing:-.2px}
+  h3{font-size:18px;margin:28px 0 8px;color:var(--acc2)}
+  h4{font-size:15px;margin:20px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+  p,li{color:#d7deec}
+  a{color:var(--acc)}
+  ul,ol{padding-left:22px} li{margin:5px 0}
+  code{background:#0a0e16;border:1px solid var(--line);border-radius:5px;padding:1.5px 6px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#9fe7cf}
+  pre{background:#0a0e16;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto}
+  pre code{background:none;border:none;padding:0;color:#cdd6e6;font-size:13.5px;line-height:1.7}
+  blockquote{margin:16px 0;padding:10px 18px;border-left:3px solid var(--acc);
+    background:var(--card);border-radius:0 10px 10px 0;color:var(--mut)}
+  blockquote p{margin:6px 0;color:var(--mut)}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:14.5px;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:var(--txt);font-weight:600}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+  .footer{color:var(--mut);font-size:13px;margin-top:50px;text-align:center;border-top:1px solid var(--line);padding-top:22px}
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html">← Project Hub</a><span class="crumb">/ Project Documentation</span></div>
+<div class="wrap">
+<h1 id="project-documentation-voice-hospital-finder-bot">Project Documentation: Voice Hospital Finder Bot</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#2-architecture-overview">Architecture Overview</a></li>
+<li><a href="#3-key-components-and-modules">Key Components and Modules</a>
+<ul>
+<li><a href="#31-apppy---application-entry-point">3.1 <code>app.py</code> - Application Entry Point</a></li>
+<li><a href="#32-db---database-and-data-management">3.2 <code>db/</code> - Database and Data Management</a>
+<ul>
+<li><a href="#dbpy"><code>db.py</code></a></li>
+<li><a href="#modelspy"><code>models.py</code></a></li>
+<li><a href="#modules---helper-modules"><code>modules/</code> - Helper Modules</a></li>
+</ul>
+</li>
+<li><a href="#33-graphs---conversational-graph-logic">3.3 <code>graphs/</code> - Conversational Graph Logic</a>
+<ul>
+<li><a href="#graph_toolspy"><code>graph_tools.py</code></a></li>
+<li><a href="#hospital_graphpy"><code>hospital_graph.py</code></a></li>
+</ul>
+</li>
+<li><a href="#34-tools---utility-tools">3.4 <code>tools/</code> - Utility Tools</a>
+<ul>
+<li><a href="#rag_retrievepy"><code>rag_retrieve.py</code></a></li>
+<li><a href="#transcribepy"><code>transcribe.py</code></a></li>
+<li><a href="#recognizepy"><code>recognize.py</code></a></li>
+<li><a href="#text_to_speechpy"><code>text_to_speech.py</code></a></li>
+<li><a href="#hospital_lookuppy"><code>hospital_lookup.py</code></a></li>
+</ul>
+</li>
+<li><a href="#35-settings---configuration">3.5 <code>settings/</code> - Configuration</a>
+<ul>
+<li><a href="#configpy"><code>config.py</code></a></li>
+<li><a href="#promptspy"><code>prompts.py</code></a></li>
+<li><a href="#clientpy"><code>client.py</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-setup-and-installation">Setup and Installation</a></li>
+</ol>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The Voice Hospital Finder Bot is an intelligent conversational AI designed to assist users in finding hospitals based on their specific needs. It integrates advanced natural language processing (NLP), speech processing, and Retrieval Augmented Generation (RAG) techniques to offer a seamless voice-activated experience. The bot can understand natural language queries, search a comprehensive hospital database, and provide grounded responses, optionally enhanced by fine-tuned language models.</p>
+<h2 id="2-architecture-overview">2. Architecture Overview</h2>
+<p>The system follows a modular architecture, broadly divided into:</p>
+<ul>
+<li><strong>Speech Processing Layer</strong>: Handles transcription of user's voice input and synthesis of the bot's responses.</li>
+<li><strong>Natural Language Understanding (NLU) Layer</strong>: Extracts intent and entities from transcribed text.</li>
+<li><strong>Data Management Layer</strong>: Manages hospital and insurance data, including a relational database and a FAISS vector store.</li>
+<li><strong>Retrieval Augmented Generation (RAG) Layer</strong>: Combines semantic search with LLM grounding to generate accurate and context-aware hospital recommendations.</li>
+<li><strong>Conversational Orchestration Layer</strong>: Manages the multi-turn dialogue flow using LangGraph.</li>
+<li><strong>Configuration &amp; Utilities</strong>: Centralized settings and common utility functions.</li>
+</ul>
+<h2 id="3-key-components-and-modules">3. Key Components and Modules</h2>
+<h3 id="31-apppy---application-entry-point">3.1 <code>app.py</code> - Application Entry Point</h3>
+<p>This is the main script that orchestrates the entire application. It performs the following key functions:</p>
+<ul>
+<li><strong>Initialization Animation</strong>: Provides a visual cue during startup.</li>
+<li><strong>RAG Retriever Setup</strong>: Initializes the <code>HospitalRAGRetriever</code> responsible for hospital data retrieval and LLM grounding. This instance is then made globally available to other components.</li>
+<li><strong>State Management</strong>: Initializes <code>HospitalFinderState</code> (a Pydantic model) to maintain the current state of the conversation, including user inputs, bot responses, and extracted information.</li>
+<li><strong>Conversational Flow</strong>: Invokes the <code>hospital_finder_graph</code> (defined in <code>graphs/hospital_graph.py</code>) to manage the conversational turns and overall logic.</li>
+</ul>
+<h3 id="32-db---database-and-data-management">3.2 <code>db/</code> - Database and Data Management</h3>
+<p>This directory encapsulates all functionalities related to data storage, generation, and persistence.</p>
+<ul>
+<li>
+<h4 id="dbpy"><code>db.py</code></h4>
+The core database management script.
+<ul>
+<li><strong>Database Setup</strong>: Uses Pony ORM to bind to a SQLite database (<code>hospitals.sqlite</code>).</li>
+<li><strong>Model Definitions</strong>: Defines <code>Hospital</code>, <code>InsurancePlan</code>, and <code>HospitalInsurancePlan</code> (many-to-many relationship) entities.</li>
+<li><strong>Data Population</strong>: Automatically generates synthetic hospital and insurance plan data and populates the database if it's empty, ensuring a ready-to-use dataset.</li>
+<li><strong>FAISS Vector DB Creation</strong>: If not already present, it creates a FAISS vector database from the hospital records, embedding their details for semantic search.</li>
+<li><strong>Fine-tuning Data Generation</strong>: Generates dialogue-based fine-tuning data for the LLM using existing hospital and insurance information.</li>
+<li><strong>LLM Fine-tuning Orchestration</strong>: Initiates the QLoRA fine-tuning process for the LLM using the generated data, if a fine-tuned model doesn't already exist.</li>
+</ul>
+</li>
+<li>
+<h4 id="modelspy"><code>models.py</code></h4>
+Contains Pydantic models used throughout the application for structured data validation and serialization.
+<ul>
+<li><code>LLMResponseModel</code>: Defines the expected structure for parsing LLM outputs, including intent, location, hospital types, etc.</li>
+<li><code>RAGGroundedResponseModel</code>: A model to structure the response from the RAG grounding process, containing selected hospital IDs and a dialogue string.</li>
+<li><code>HospitalFinderState</code>: Manages the state of a single conversational turn, tracking input audio paths, transcriptions, recognitions, hospitals found, turn count, and final responses.</li>
+<li><code>TTSResponseModel</code>: Defines the structure for Text-to-Speech responses.</li>
+</ul>
+</li>
+<li>
+<h4 id="modules---helper-modules"><code>modules/</code> - Helper Modules</h4>
+<ul>
+<li><code>fine_tuner.py</code>: Implements the core logic for QLoRA fine-tuning of a causal language model (e.g., Open Llama 3B V2).
+<ul>
+<li><strong>Dataset Preparation</strong>: Loads JSON data, formats it into instruction-response pairs, and tokenizes it.</li>
+<li><strong>Model Loading</strong>: Loads a base LLM (e.g., <code>openlm-research/open_llama_3b_v2</code>) in 4-bit quantization using <code>BitsAndBytesConfig</code> (QLoRA).</li>
+<li><strong>PEFT Integration</strong>: Applies LoRA adapters to the base model using <code>peft.get_peft_model</code>.</li>
+<li><strong>Training</strong>: Configures <code>transformers.Trainer</code> with <code>TrainingArguments</code> to fine-tune the model, saving checkpoints and the final model.</li>
+</ul>
+</li>
+<li><code>fine_tune_data_generator.py</code>, <code>hospital_generator.py</code>, <code>insurance_generator.py</code>, <code>vector_db_generator.py</code>: These modules (inferred) are responsible for generating synthetic data, including hospital records, insurance plans, and the structured data used for fine-tuning and vector database creation.</li>
+</ul>
+</li>
+</ul>
+<h3 id="33-graphs---conversational-graph-logic">3.3 <code>graphs/</code> - Conversational Graph Logic</h3>
+<p>This directory contains the LangGraph implementation that defines the conversational flow.</p>
+<ul>
+<li>
+<h4 id="graph_toolspy"><code>graph_tools.py</code></h4>
+Defines Langchain-compatible <code>tool</code>s that integrate various functionalities into the LangGraph conversational agent.
+<ul>
+<li><code>transcribe_audio_tool</code>: Asynchronously transcribes audio files to text using <code>tools.transcribe.transcribe_wrapper</code>.</li>
+<li><code>recognize_query_tool</code>: Extracts structured information (intent, entities) from text using <code>tools.recognize.recognize_wrapper</code>.</li>
+<li><code>text_to_speech_tool</code>: Converts text into speech audio using <code>tools.text_to_speech.text_to_speech_wrapper</code>.</li>
+<li><code>hospital_lookup_tool</code>: Performs a direct lookup of hospitals based on location, type, and insurance using <code>tools.hospital_lookup.hospital_lookup_wrapper</code>.</li>
+<li><code>hospital_lookup_rag_tool</code>: Executes a RAG-based hospital search, combining FAISS retrieval with LLM grounding using <code>tools.rag_retrieve.rag_search_wrapper</code>. It relies on a globally set <code>HospitalRAGRetriever</code> instance.</li>
+</ul>
+</li>
+<li><code>hospital_graph.py</code>: (Inferred) This module is expected to define the nodes and edges of the LangGraph state machine, orchestrating the sequence of tool calls and state transitions based on user input and system responses.</li>
+</ul>
+<h3 id="34-tools---utility-tools">3.4 <code>tools/</code> - Utility Tools</h3>
+<p>This directory contains standalone utility functions wrapped as tools.</p>
+<ul>
+<li>
+<h4 id="rag_retrievepy"><code>rag_retrieve.py</code></h4>
+Implements the <code>HospitalRAGRetriever</code> class, a crucial component for the RAG functionality.
+<ul>
+<li><strong>Initialization</strong>: Loads the FAISS vector database and, if <code>GROUND_WITH_FINE_TUNE</code> is enabled, loads the fine-tuned LLM (both model and tokenizer).</li>
+<li><strong>Vector DB Loading</strong>: Uses <code>FAISS.load_local</code> to load the pre-built hospital vector database.</li>
+<li><strong>Fine-tuned Model Loading</strong>: Efficiently loads a PEFT-wrapped fine-tuned model (e.g., from QLoRA training) or falls back to a standard model.</li>
+<li><strong><code>retrieve</code> method</strong>: Performs a similarity search on the FAISS vector database based on a user query, filters results by distance, and sorts them by intent (nearest/best).</li>
+<li><strong><code>ground_with_qlora</code> method</strong>: Generates responses using the fine-tuned LLM, providing more specific and relevant dialogue for certain intents (e.g., <code>find_by_hospital</code>).</li>
+<li><strong><code>ground_results</code> method</strong>: The main grounding function. It dynamically decides whether to use the fine-tuned QLoRA model or a standard LLM to generate a conversational response based on retrieved hospitals and user intent. It structures the response using <code>RAGGroundedResponseModel</code>.</li>
+<li><strong><code>rag_search_wrapper</code></strong>: An asynchronous wrapper function that orchestrates the retrieval and grounding process, returning selected hospitals and a dialogue string.</li>
+</ul>
+</li>
+<li><code>transcribe.py</code>: (Inferred) Provides functionality for converting spoken audio into text, likely using services like OpenAI Whisper.</li>
+<li><code>recognize.py</code>: (Inferred) Implements natural language understanding capabilities to extract structured data (e.g., hospital names, locations, insurances) from free-form text. It might use spaCy for NER and potentially LLMs for more complex recognition.</li>
+<li><code>text_to_speech.py</code>: (Inferred) Handles the conversion of text into natural-sounding speech, likely using a Text-to-Speech API (e.g., OpenAI TTS).</li>
+<li><code>hospital_lookup.py</code>: (Inferred) Contains the direct logic for querying the SQLite database for hospital information, potentially used for simpler lookup scenarios or as a fallback.</li>
+</ul>
+<h3 id="35-settings---configuration">3.5 <code>settings/</code> - Configuration</h3>
+<ul>
+<li>
+<h4 id="configpy"><code>config.py</code></h4>
+A central configuration file for managing various application settings.
+<ul>
+<li><strong>App Mode</strong>: Defines the application's operating mode (<code>voicebot</code> or <code>chat</code>).</li>
+<li><strong>Logging</strong>: Configures logging levels and behavior.</li>
+<li><strong>NLP Model</strong>: Loads the spaCy <code>en_core_web_sm</code> model for Named Entity Recognition (NER).</li>
+<li><strong>Data Generation Constants</strong>: Provides city coordinates, lists of hospital types, and insurance providers for synthetic data generation.</li>
+<li><strong>Tool-specific Configurations</strong>: Contains parameters for <code>Transcriber</code>, <code>Recognizer</code>, <code>Clarifier</code>, <code>Text-to-Dialogue</code>, and <code>Hospital Finder</code> tools, including model names, temperatures, and thresholds.</li>
+<li><strong>RAG &amp; Fine-tuning Paths</strong>: Specifies file paths for the hospital database, FAISS vector database, fine-tuning data, and the fine-tuned model output directory.</li>
+</ul>
+</li>
+<li><code>prompts.py</code>: (Inferred) Likely stores various prompts used for interacting with Large Language Models (LLMs), such as system prompts and user message templates for RAG grounding and recognition.</li>
+<li><code>client.py</code>: (Inferred) Expected to handle the initialization and configuration of external API clients, particularly for LLMs (e.g., OpenAI client, Gemini client).</li>
+</ul>
+<h2 id="4-setup-and-installation">4. Setup and Installation</h2>
+<p>Refer to the <code>README.md</code> file for detailed instructions on setting up the environment, installing dependencies, and running the application.</p>
+
+<div class="footer">Hospital Finder Assistant · Built October 2025 · Navin Pandiyan</div>
+</div>
+</body>
+</html>

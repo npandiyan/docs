@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Hospital Finder Assistant — Project Hub</title>
+<style>
+  :root{
+    --bg:#0b0f17; --bg2:#0f1626; --card:#131c2e; --card2:#172238;
+    --line:#243049; --txt:#e7ecf5; --mut:#9aa7bd; --acc:#4f8cff; --acc2:#37d3a8;
+    --warn:#ffb454; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%,#16233f 0%,transparent 60%),
+               radial-gradient(900px 500px at -10% 10%,#0f2030 0%,transparent 55%),var(--bg);
+    color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header.hero{padding:70px 0 40px;border-bottom:1px solid var(--line)}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+    color:var(--acc2);background:rgba(55,211,168,.1);border:1px solid rgba(55,211,168,.3);
+    padding:5px 12px;border-radius:999px;margin-bottom:20px;letter-spacing:.2px}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 14px;letter-spacing:-.5px}
+  .sub{font-size:clamp(16px,2.2vw,20px);color:var(--mut);max-width:720px;margin:0}
+  .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .tag{font-size:12.5px;color:var(--mut);background:var(--card);border:1px solid var(--line);
+    padding:5px 11px;border-radius:8px}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);
+    font-weight:700;margin:0 0 22px}
+  h3{margin:0 0 6px;font-size:18px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .card{display:block;background:linear-gradient(180deg,var(--card2),var(--card));
+    border:1px solid var(--line);border-radius:var(--radius);padding:22px;transition:.18s;
+    color:var(--txt)}
+  .card:hover{border-color:var(--acc);transform:translateY(-2px);text-decoration:none;
+    box-shadow:0 12px 30px -16px rgba(79,140,255,.55)}
+  .card.primary{border-color:rgba(55,211,168,.4)}
+  .card.primary:hover{border-color:var(--acc2);box-shadow:0 12px 30px -16px rgba(55,211,168,.55)}
+  .card .ico{font-size:24px;margin-bottom:12px}
+  .card p{margin:6px 0 0;color:var(--mut);font-size:14px}
+  .card .go{margin-top:14px;font-size:13px;font-weight:600;color:var(--acc)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;text-align:center}
+  .stat .n{font-size:30px;font-weight:800;color:var(--acc2);letter-spacing:-1px}
+  .stat .l{font-size:13px;color:var(--mut);margin-top:4px}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 15px;font-size:14px;font-weight:600}
+  .step small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+  .arrow{color:var(--acc);font-size:18px}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  ul.clean{margin:0;padding-left:18px}
+  ul.clean li{margin:7px 0;color:var(--mut)}
+  ul.clean li b{color:var(--txt)}
+
+  pre{background:#0a0e16;border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+    overflow-x:auto;font-size:13.5px;line-height:1.7;color:#cdd6e6;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+  pre .c{color:#5f6e87}
+  pre .k{color:var(--acc2)}
+
+  .note{background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.28);
+    border-radius:12px;padding:16px 18px;color:#f1d9b5;font-size:14.5px}
+
+  footer{padding:40px 0 60px;color:var(--mut);font-size:13.5px;text-align:center}
+  .pill{display:inline-block;background:var(--card);border:1px solid var(--line);
+    padding:4px 12px;border-radius:999px;color:var(--mut);font-size:12.5px;margin:3px 4px}
+  .pill a{color:var(--acc)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● Interview Case Study · Built October 2025</span>
+    <h1>Hospital Finder Assistant</h1>
+    <p class="sub">A voice- and text-enabled conversational AI that helps users find hospitals by
+      location, specialty and insurance — combining speech-to-text, LLM intent recognition,
+      FAISS semantic retrieval (RAG), a QLoRA fine-tuned model, and text-to-speech, orchestrated with LangGraph.</p>
+    <div class="tagrow">
+      <span class="tag">Python 3.11</span>
+      <span class="tag">LangGraph</span>
+      <span class="tag">FAISS RAG</span>
+      <span class="tag">QLoRA / PEFT</span>
+      <span class="tag">OpenAI Whisper + TTS</span>
+      <span class="tag">Gemini 2.0 Flash</span>
+      <span class="tag">Pony ORM + SQLite</span>
+      <span class="tag">spaCy NER</span>
+    </div>
+  </div>
+</header>
+
+<!-- DOCUMENTATION LINKS -->
+<section>
+  <div class="wrap">
+    <h2>Documentation &amp; Deliverables</h2>
+    <div class="grid">
+      <a class="card primary" href="pages/slide-deck.html">
+        <div class="ico">🎞️</div>
+        <h3>Slide Deck</h3>
+        <p>A walkthrough of the problem, approach, architecture and results. Use ← / → to navigate.</p>
+        <div class="go">Open deck →</div>
+      </a>
+      <a class="card primary" href="pages/resume.html">
+        <div class="ico">📄</div>
+        <h3>My Résumé</h3>
+        <p>Navin Pandiyan — full CV (also downloadable as PDF). Live at navinpandiyan.github.io.</p>
+        <div class="go">View résumé →</div>
+      </a>
+      <a class="card" href="assets/hospital_finder_flow.png">
+        <div class="ico">🗺️</div>
+        <h3>Architecture Diagram</h3>
+        <p>The end-to-end conversational flow graph (LangGraph nodes &amp; edges).</p>
+        <div class="go">View diagram →</div>
+      </a>
+      <a class="card" href="pages/setup-and-run.html">
+        <div class="ico">⚙️</div>
+        <h3>Setup &amp; Run Guide</h3>
+        <p>Step-by-step install, environment variables, and how to run in chatbot or voicebot mode.</p>
+        <div class="go">Read guide →</div>
+      </a>
+      <a class="card" href="pages/documentation.html">
+        <div class="ico">📘</div>
+        <h3>Project Documentation</h3>
+        <p>Architecture overview, modules, components and configurables explained.</p>
+        <div class="go">Read docs →</div>
+      </a>
+      <a class="card" href="pages/source-code-reference.html">
+        <div class="ico">🧩</div>
+        <h3>Source Code Reference</h3>
+        <p>Class- and function-level documentation of the core modules.</p>
+        <div class="go">Read reference →</div>
+      </a>
+      <a class="card" href="https://github.com/navinpandiyan/hospital-finder-assistant">
+        <div class="ico">💾</div>
+        <h3>GitHub Repository</h3>
+        <p>Full source code, data generators, fine-tuning pipeline and sample outputs (public).</p>
+        <div class="go">Open repo →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AT A GLANCE -->
+<section>
+  <div class="wrap">
+    <h2>At a Glance</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">150</div><div class="l">Synthetic hospitals</div></div>
+      <div class="stat"><div class="n">20</div><div class="l">Insurance plans</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">Recognized intents</div></div>
+      <div class="stat"><div class="n">~50</div><div class="l">UAE locations</div></div>
+      <div class="stat"><div class="n">3B</div><div class="l">QLoRA base params</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">Modes (chat / voice)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section>
+  <div class="wrap">
+    <h2>How It Works</h2>
+    <div class="flow">
+      <div class="step">🎙️ Input<small>Voice or text</small></div><span class="arrow">→</span>
+      <div class="step">📝 Transcribe<small>Whisper STT</small></div><span class="arrow">→</span>
+      <div class="step">🧠 Recognize<small>Intent + entities</small></div><span class="arrow">→</span>
+      <div class="step">❓ Clarify<small>If info missing</small></div><span class="arrow">→</span>
+      <div class="step">🔎 Retrieve<small>FAISS + RAG</small></div><span class="arrow">→</span>
+      <div class="step">✨ Ground<small>LLM / QLoRA</small></div><span class="arrow">→</span>
+      <div class="step">🔊 Respond<small>TTS reply</small></div>
+    </div>
+    <div class="cols" style="margin-top:28px">
+      <div>
+        <h3 style="font-size:15px;color:var(--acc2)">The six intents</h3>
+        <ul class="clean">
+          <li><b>find_nearest</b> — nearest hospitals by distance</li>
+          <li><b>find_best</b> — top-rated hospitals</li>
+          <li><b>find_by_insurance</b> — hospitals covered by a provider</li>
+          <li><b>find_by_hospital</b> — details about a specific hospital</li>
+          <li><b>compare_hospitals</b> — compare two or more facilities</li>
+          <li><b>exit</b> — end the conversation</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:15px;color:var(--acc2)">Design highlights</h3>
+        <ul class="clean">
+          <li><b>LangGraph state machine</b> — multi-turn dialogue with clarification loops</li>
+          <li><b>Hybrid recognition</b> — LLM-based or spaCy NER + fuzzy matching</li>
+          <li><b>RAG grounding</b> — semantic search filtered by Haversine distance &amp; rating</li>
+          <li><b>QLoRA fine-tune</b> — 4-bit Open-LLaMA-3B with LoRA adapters for hospital queries</li>
+          <li><b>Pluggable models</b> — STT, LLM, TTS and lookup mode all configurable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RUN -->
+<section>
+  <div class="wrap">
+    <h2>Run It in 4 Steps</h2>
+    <pre><span class="c"># 1 — clone</span>
+git clone https://github.com/navinpandiyan/hospital-finder-assistant.git
+cd hospital-finder-assistant
+
+<span class="c"># 2 — install (uv handles the venv + deps)</span>
+pip install uv
+uv sync
+
+<span class="c"># 3 — add your keys to a .env file</span>
+OPENAI_API_KEY=<span class="k">"sk-..."</span>      <span class="c"># Whisper STT, embeddings, TTS</span>
+LLM_API_KEY=<span class="k">"..."</span>           <span class="c"># recognition / clarify / RAG grounding LLM</span>
+LLM_BASE_URL=<span class="k">"https://openrouter.ai/api/v1"</span>
+
+<span class="c"># 4 — run (first run seeds the DB, builds FAISS, optionally fine-tunes)</span>
+uv run app.py</pre>
+    <p style="color:var(--mut);font-size:13.5px;margin-top:14px">
+      Default mode is <code>chatbot</code> (text). Set <code>MODE = "voicebot"</code> in
+      <code>settings/config.py</code> for full speech in/out. Full details in the
+      <a href="pages/setup-and-run.html">Setup &amp; Run Guide</a>.
+    </p>
+  </div>
+</section>
+
+<!-- FINAL NOTE -->
+<section>
+  <div class="wrap">
+    <h2>A Note</h2>
+    <div class="note">
+      📌 This project was designed and built in <b>October 2025</b> as an interview case study —
+      a self-contained, end-to-end voice AI assistant for hospital discovery, built from scratch
+      including synthetic data generation, a RAG pipeline, and a QLoRA fine-tuning workflow.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="pill">Hospital Finder Assistant</span>
+    <span class="pill">Built Oct 2025</span>
+    <span class="pill">Navin Pandiyan</span>
+    <span class="pill"><a href="https://navinpandiyan.github.io">navinpandiyan.github.io</a></span>
+    <span class="pill"><a href="https://github.com/navinpandiyan/hospital-finder-assistant">GitHub</a></span>
+    <p style="margin-top:14px">Authored as part of an interview case study submission.</p>
+  </div>
+</footer>
+
+</body>
+</html>

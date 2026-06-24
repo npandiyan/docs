@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Navin Pandiyan — Project Docs</title>
+<style>
+  :root{--bg:#0b0f17;--card:#131c2e;--card2:#172238;--line:#243049;--txt:#e7ecf5;
+    --mut:#9aa7bd;--acc:#4f8cff;--acc2:#37d3a8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 600px at 80% -10%,#16233f 0%,transparent 60%),var(--bg);
+    color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  a{color:var(--acc);text-decoration:none}
+  header{padding:72px 0 30px;border-bottom:1px solid var(--line)}
+  .badge{display:inline-flex;gap:8px;align-items:center;font-size:13px;font-weight:600;color:var(--acc2);
+    background:rgba(55,211,168,.1);border:1px solid rgba(55,211,168,.3);padding:5px 12px;border-radius:999px;margin-bottom:18px}
+  h1{font-size:clamp(28px,5vw,42px);margin:0 0 12px;letter-spacing:-.5px}
+  .sub{color:var(--mut);font-size:18px;max-width:640px;margin:0}
+  section{padding:40px 0}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);font-weight:700;margin:0 0 20px}
+  .card{display:block;background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:16px;padding:24px;transition:.18s;color:var(--txt);max-width:520px}
+  .card:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 12px 30px -16px rgba(79,140,255,.55)}
+  .card h3{margin:0 0 6px;font-size:20px}
+  .card p{margin:6px 0 0;color:var(--mut);font-size:14.5px}
+  .card .go{margin-top:14px;font-size:13px;font-weight:600;color:var(--acc)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .tag{font-size:12px;color:var(--mut);background:#0a0e16;border:1px solid var(--line);padding:4px 10px;border-radius:7px}
+  .soon{color:var(--mut);font-size:14px;margin-top:22px}
+  footer{padding:36px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line)}
+  footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="badge">● Project Documentation</span>
+    <h1>Navin Pandiyan — Project Docs</h1>
+    <p class="sub">A small hub for project case studies and their documentation.</p>
+  </div>
+</header>
+<section>
+  <div class="wrap">
+    <h2>Projects</h2>
+    <a class="card" href="hospital-finder-assistant/index.html">
+      <h3>Hospital Finder Assistant</h3>
+      <p>A voice- and text-enabled conversational AI that finds hospitals by location, specialty and
+         insurance — speech-to-text, LLM intent recognition, FAISS RAG, a QLoRA fine-tuned model and TTS,
+         orchestrated with LangGraph. Built October 2025.</p>
+      <div class="tags">
+        <span class="tag">LangGraph</span><span class="tag">FAISS RAG</span><span class="tag">QLoRA</span>
+        <span class="tag">Whisper + TTS</span><span class="tag">Python</span>
+      </div>
+      <div class="go">Open project hub →</div>
+    </a>
+    <p class="soon">More projects will be added here over time.</p>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    Navin Pandiyan · <a href="https://navinpandiyan.github.io">navinpandiyan.github.io</a> ·
+    <a href="https://github.com/navinpandiyan">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>
