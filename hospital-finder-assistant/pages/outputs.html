@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Sample Outputs — Hospital Finder Assistant</title>
+<style>
+  :root{--bg:#0b0f17;--card:#131c2e;--card2:#172238;--line:#243049;--txt:#e7ecf5;
+    --mut:#9aa7bd;--acc:#4f8cff;--acc2:#37d3a8;--warn:#ffb454}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 600px at 85% -10%,#16233f 0%,transparent 60%),var(--bg);
+    color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(11,15,23,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:12px 22px;display:flex;gap:16px;align-items:center}
+  .bar a{color:var(--acc);text-decoration:none;font-size:14px;font-weight:600}
+  .bar .crumb{color:var(--mut);font-size:13px}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 22px 80px}
+  h1{font-size:32px;margin:0 0 6px;letter-spacing:-.4px}
+  .lead{color:var(--mut);font-size:16px;margin:0 0 30px;max-width:680px}
+  .card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:16px;padding:22px 24px;margin-bottom:22px}
+  .ibadge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--acc2);
+    background:rgba(55,211,168,.1);border:1px solid rgba(55,211,168,.3);padding:4px 11px;border-radius:999px;margin-bottom:14px}
+  .bubble{border-radius:12px;padding:12px 15px;margin:8px 0;font-size:15px;position:relative}
+  .bubble .who{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:4px}
+  .bubble.user{background:#0a0e16;border:1px solid var(--line)}
+  .bubble.bot{background:rgba(79,140,255,.08);border:1px solid rgba(79,140,255,.25);color:#eaf0fa}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+  .metak{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-right:2px}
+  .chip{font-size:12.5px;background:#0a0e16;border:1px solid var(--line);color:#cdd6e6;padding:3px 9px;border-radius:7px}
+  .hlabel{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:16px 0 8px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:var(--txt);font-weight:600;white-space:nowrap}
+  .addr{color:var(--mut);font-size:12px;margin-top:2px}
+  .footer{color:var(--mut);font-size:13px;margin-top:40px;text-align:center;border-top:1px solid var(--line);padding-top:22px}
+</style>
+</head>
+<body>
+<div class="bar"><a href="../index.html">← Project Hub</a><span class="crumb">/ Sample Outputs</span></div>
+<div class="wrap">
+  <h1>Sample Outputs</h1>
+  <p class="lead">Real conversation transcripts captured from the running bot — each saved automatically
+     as a JSON session under <code>/outputs</code>. They show the recognized intent and entities,
+     the hospitals selected by the RAG pipeline, and the bot's grounded reply.</p>
+  
+    <div class="card">
+      <div class="ibadge">Compare Hospitals</div>
+      <div class="bubble user"><span class="who">You</span>compare mleiha ent clinic and dubai dental &amp; obstetrics care hub</div>
+      <div class="meta"><span class="metak">intent</span><span class="chip">Compare Hospitals</span></div><div class="meta"><span class="metak">specialty</span><span class="chip">ent</span></div><div class="meta"><span class="metak">hospital</span><span class="chip">mleiha ent clinic</span><span class="chip">dubai dental &amp; obstetrics care hub</span></div><div class="meta"><span class="metak">count</span><span class="chip">2</span></div>
+      <div class="bubble bot"><span class="who">Bot</span>Comparing Mleiha Ent Clinic and Dubai Dental &amp; Obstetrics Care Hub: Mleiha Ent Clinic on Al Falaj St in Mleiha specializes in ENT and accepts Bupa, Gulf Insurance, and Allianz, with a rating of 2.7. Dubai Dental &amp; Obstetrics Care Hub on Al Safa St in Dubai specializes in dental and obstetrics, accepts Axa, Al Manara, and Metlife, and has a rating of 1.0.</div>
+      <div class="hlabel">Selected hospitals</div><table><thead><tr><th>Hospital</th><th>Specialties</th><th>Rating</th><th>Distance</th><th>Insurance accepted</th></tr></thead><tbody><tr><td><b>Mleiha Ent Clinic</b><div class="addr">94 Al Falaj St, Mleiha</div></td><td>ent</td><td>2.7★</td><td>—</td><td>bupa, gulf insurance, allianz</td></tr><tr><td><b>Dubai Dental &amp; Obstetrics Care Hub</b><div class="addr">207 Al Safa St, Dubai</div></td><td>dental, obstetrics</td><td>1.0★</td><td>—</td><td>axa, al manara, metlife</td></tr></tbody></table>
+    </div>
+    <div class="card">
+      <div class="ibadge">Find Nearest</div>
+      <div class="bubble user"><span class="who">You</span>find me 4 best cardiology hospitals near business bay, dubai</div>
+      <div class="meta"><span class="metak">intent</span><span class="chip">Find Nearest</span></div><div class="meta"><span class="metak">location</span><span class="chip">dubai</span></div><div class="meta"><span class="metak">specialty</span><span class="chip">cardiology</span></div><div class="meta"><span class="metak">count</span><span class="chip">4</span></div>
+      <div class="bubble bot"><span class="who">Bot</span>I found one cardiology hospital near Business Bay. Lahbab Cardiology &amp; General Surgery Clinic is located on Desert Road in Lahbab, about 49.22 km away. They specialize in cardiology and general surgery and accept Medcare insurance.</div>
+      <div class="hlabel">Selected hospitals</div><table><thead><tr><th>Hospital</th><th>Specialties</th><th>Rating</th><th>Distance</th><th>Insurance accepted</th></tr></thead><tbody><tr><td><b>Lahbab Cardiology &amp; General Surgery Clinic</b><div class="addr">149 Desert Rd, Lahbab</div></td><td>cardiology, general surgery</td><td>2.0★</td><td>49.2 km</td><td>medcare</td></tr></tbody></table>
+    </div>
+    <div class="card">
+      <div class="ibadge">Find by Hospital</div>
+      <div class="bubble user"><span class="who">You</span>what insurance providers does mleiha ent clinic accept?</div>
+      <div class="meta"><span class="metak">intent</span><span class="chip">Find by Hospital</span></div><div class="meta"><span class="metak">specialty</span><span class="chip">ent</span></div><div class="meta"><span class="metak">hospital</span><span class="chip">mleiha ent clinic</span></div><div class="meta"><span class="metak">count</span><span class="chip">1</span></div>
+      <div class="bubble bot"><span class="who">Bot</span>Mleiha Ent Clinic in Mleiha offers ENT services and has a rating of 2.7. They accept several insurance plans. The Gold Comprehensive plan from Allianz has a sum insured limit of AED $86,680, includes maternity benefits after 9 months, and requires pre-approval for major procedures. It also offers a no-claim bonus and covers ambulance services up to AED $800 per claim. The Corporate Advantage plan from Bupa has a sum insured limit of AED $160,987, includes maternity benefits after 9 months, and requires pre-approval for major procedures. It also offers a no-claim bonus and covers ambulance services up to AED $1,006 per claim.</div>
+      <div class="hlabel">Selected hospitals</div><table><thead><tr><th>Hospital</th><th>Specialties</th><th>Rating</th><th>Distance</th><th>Insurance accepted</th></tr></thead><tbody><tr><td><b>Mleiha Ent Clinic</b><div class="addr">94 Al Falaj St, Mleiha</div></td><td>ent</td><td>2.7★</td><td>—</td><td>bupa, gulf insurance, allianz</td></tr></tbody></table>
+    </div>
+    <div class="card">
+      <div class="ibadge">Find Nearest</div>
+      <div class="bubble user"><span class="who">You</span>show me all urology hospitals near abu dhabi</div>
+      <div class="meta"><span class="metak">intent</span><span class="chip">Find Nearest</span></div><div class="meta"><span class="metak">location</span><span class="chip">abu dhabi</span></div><div class="meta"><span class="metak">specialty</span><span class="chip">urology</span></div><div class="meta"><span class="metak">count</span><span class="chip">3</span></div>
+      <div class="bubble bot"><span class="who">Bot</span>I found a few urology centers near Abu Dhabi. First, there&#x27;s Liwa Urology Treatment Facility on Liwa St in Liwa, about 131.85 km away. Next is Al Qor Urology &amp; Neonatology Medical Center on Al Qor Rd in Al Qor, approximately 142.46 km away. Lastly, there&#x27;s Umm Al Quwain Urology Treatment Facility on Al Sayegh Rd in Umm Al Quwain, around 170.04 km from you.</div>
+      <div class="hlabel">Selected hospitals</div><table><thead><tr><th>Hospital</th><th>Specialties</th><th>Rating</th><th>Distance</th><th>Insurance accepted</th></tr></thead><tbody><tr><td><b>Liwa Urology Treatment Facility</b><div class="addr">207 Liwa St, Liwa</div></td><td>urology</td><td>1.6★</td><td>131.8 km</td><td>medcare, orient</td></tr><tr><td><b>Al Qor Urology &amp; Neonatology Medical Center</b><div class="addr">81 Al Qor Rd, Al Qor</div></td><td>urology, neonatology, cardiology</td><td>3.4★</td><td>142.5 km</td><td>bupa, al safwa</td></tr><tr><td><b>Umm Al Quwain Urology Treatment Facility</b><div class="addr">182 Al Sayegh Rd, Umm Al Quwain</div></td><td>urology, palliative care, dermatologic surgery</td><td>4.5★</td><td>170.0 km</td><td>orient, medcare, orient</td></tr></tbody></table>
+    </div>
+  <div class="footer">Hospital Finder Assistant · 4 sample sessions · Built October 2025</div>
+</div>
+</body>
+</html>
